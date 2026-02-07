@@ -20,19 +20,8 @@ const englishFont = Playfair_Display({
 
 const Section7_Closing = () => {
   return (
-    <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50">
+    <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50 wedding-bg">
       
-      {/* 1. 배경 이미지 */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/modern-bg.png" 
-          alt="Closing Background"
-          fill
-          className="object-cover object-bottom opacity-80"
-          priority
-        />
-      </div>
-
       {/* 2. 액자 + 와이어 (위쪽으로 배치) */}
       <motion.div 
         className="absolute top-0 w-full h-full flex flex-col items-center pointer-events-none z-10"

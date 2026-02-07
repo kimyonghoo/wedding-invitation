@@ -1,6 +1,6 @@
 // app/page.tsx
 
-import Section1_Hero from '@/app/components/Section1_Hero';
+import Section1_Main from '@/app/components/Section1_Main';
 import Section2_Quote from '@/app/components/Section2_Quote';
 import Section3_Calendar from '@/app/components/Section3_Calendar';
 import Section4_Gallery from '@/app/components/Section4_Gallery';
@@ -23,7 +23,7 @@ export default function Home() {
           배경 위에 정상적으로 뜹니다. (앞서 드린 코드엔 다 적용되어 있습니다)
       */}
       
-      <Section1_Hero />
+      <Section1_Main />
       <Section2_Quote />
       <Section3_Calendar />
       <Section4_Gallery />

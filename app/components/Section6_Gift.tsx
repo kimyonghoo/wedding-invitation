@@ -80,13 +80,7 @@ const Section6_Gift = () => {
 
   return (
     // [레이아웃 통일] koreanFont 적용
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className}`}>
-      
-      {/* 1. 배경 이미지 */}
-      <div className="absolute inset-0 z-0">
-        <Image src="/images/modern-bg.png" alt="Gift Background" fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-white/20"></div>
-      </div>
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className} wedding-bg`}>
 
       {/* 2. 메인 콘텐츠 카드 */}
       <motion.div 
@@ -94,7 +88,7 @@ const Section6_Gift = () => {
         whileInView={{ opacity: 1, y: 0 }} 
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-[320px] max-h-[85vh] bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-5 flex flex-col"
+        className="relative z-10 w-full max-w-[320px] max-h-[85vh] bg-white/70 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-5 flex flex-col"
       >
         
         {/* 헤더 & 계좌 정보 (고정 영역) */}

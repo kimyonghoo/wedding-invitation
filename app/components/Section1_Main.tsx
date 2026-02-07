@@ -19,9 +19,9 @@ const englishFont = Playfair_Display({
   display: 'swap',
 });
 
-const Section1_Hero = () => {
+const Section1_Main = () => {
   return (
-    <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50">
+    <section className="wedding-bg snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50">
       
       {/* 1. 배경 이미지 */}
       <div className="absolute inset-0 z-0">
@@ -112,9 +112,9 @@ const Section1_Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{
             type: "spring",
-            stiffness: 40,
+            stiffness: 20,
             damping: 12,
-            mass: 1.2,
+            mass: 2.5,
             delay: 0.5       
           }}
           className="relative pt-[30vh]" 
@@ -125,7 +125,7 @@ const Section1_Hero = () => {
             </div>
 
             {/* 실제 액자 프레임 */}
-            <div className="relative z-10 p-3 bg-white shadow-[0_15px_35px_rgba(0,0,0,0.15)] w-[65vw] max-w-[280px] aspect-[3/4]">
+            <div className="relative z-10 p-3 bg-white shadow-[0_15px_35px_rgba(0,0,0,0.15)] w-[70vw] max-w-[280px] aspect-[3/4]">
                 <div className="relative w-full h-full bg-stone-50 overflow-hidden border border-stone-100">
                     <Image 
                         src="/images/wedding/gallery-3.jpg" 
@@ -156,4 +156,4 @@ const Section1_Hero = () => {
   );
 };
 
-export default Section1_Hero;
+export default Section1_Main;

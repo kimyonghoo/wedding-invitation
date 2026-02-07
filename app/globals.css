@@ -32,3 +32,56 @@
   justify-content: center;
   align-items: center;
 }
+
+/* [공통 배경 스타일] */
+.wedding-bg {
+  position: relative;
+  /* 배경 이미지 경로 설정 (public 폴더 기준) */
+  background-image: url('/images/modern-bg.png'); 
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  
+  /* [핵심] 스크롤 해도 배경은 가만히 있고 내용만 움직이는 효과 */
+  /* 이 속성이 싫으면 삭제하시면 됩니다 */
+  background-attachment: fixed; 
+}
+
+/* [공통 배경 스타일] */
+.wedding-bg {
+  position: relative;
+  /* 이미지 경로 확인 */
+  background-image: url('/images/modern-bg.png'); 
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  
+  /* 스크롤 시 배경 고정 효과 (원치 않으면 제거) */
+  background-attachment: fixed; 
+  
+  /* [핵심] 자식 요소들과의 쌓임 맥락(Stacking Context)을 분리 */
+  /* 이 설정이 있어야 z-index: -1이 배경 뒤로 숨지 않고, '컨텐츠 바로 뒤'에 위치함 */
+  isolation: isolate; 
+}
+
+/* [공통 오버레이 스타일] */
+.wedding-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* 배경 밝기 조절 (0.2 ~ 0.4 추천) */
+  background-color: rgba(255, 255, 255, 0.3); 
+  
+  /* [수정 포인트] 내용물(z-index: auto)보다 뒤로 보냄 */
+  z-index: -1; 
+  pointer-events: none;
+}
+
+/* ❌ 아래 코드는 삭제해주세요! 
+  모든 자식 요소를 relative로 강제해서 와이어(absolute)가 망가진 원인입니다.
+*/
+/* .wedding-bg > * {
+  position: relative; 
+  z-index: 10;
+} 
+*/

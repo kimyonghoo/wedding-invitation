@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
 
 // 1. 감성적인 한글 폰트 (고운바탕)
@@ -21,20 +20,8 @@ const englishFont = Playfair_Display({
 
 const Section2_Quote = () => {
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
-      
-      {/* 2. 배경 이미지 */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/modern-bg.png"
-          alt="Modern Background"
-          fill
-          className="object-cover"
-          priority
-        />
-        {/* 배경 밝기 조절 */}
-        <div className="absolute inset-0 bg-white/20"></div>
-      </div>
+    // wedding-bg 클래스로 배경 처리
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className} wedding-bg`}>
 
       {/* 3. 초대 문구 카드 */}
       <motion.div
@@ -42,7 +29,7 @@ const Section2_Quote = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-sm px-8 py-12 bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm text-center"
+        className="relative z-10 w-full max-w-sm px-8 py-12 bg-white/70 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm text-center"
       >
         {/* 장식 선 */}
         <div className="w-[1px] h-8 bg-stone-400 mx-auto mb-4 opacity-60"></div>
@@ -56,19 +43,18 @@ const Section2_Quote = () => {
           초대의 글
         </h2>
 
-        {/* 본문: 고운바탕체가 주는 서정적인 느낌 */}
-        <div className="space-y-6 text-stone-700 text-[15px] leading-8 font-normal tracking-wide">
+        {/* 본문: 문구 변경 및 레이아웃 조정 */}
+        <div className="space-y-6 text-stone-700 text-[13px] leading-8 font-normal tracking-wide">
           <p>
-            서로 다른 별에서 태어나<br />
-            긴 여행 끝에 서로를 만났습니다.
+            꽃향기와 함께 찾아온 당신과<br />
+            사랑의 언약을 맺습니다.
           </p>
           <p>
-            이제 같은 별을 바라보며<br />
-            함께 걸어가려 합니다.
+            저희 두 사람이 삶의 동반자로서 맞이하는<br />
+            첫 번째 봄에 함께 하시어 축복해 주시면
           </p>
           <p>
-            저희 두 사람의 시작을<br />
-            따뜻한 마음으로 축복해주세요.
+            큰 기쁨으로 영원히 간직하겠습니다.
           </p>
         </div>
         
@@ -80,14 +66,14 @@ const Section2_Quote = () => {
             
             <div className="flex justify-center items-end gap-3">
                 <span className="text-stone-500 text-sm tracking-tighter mb-[2px]">
-                    박남용 · 곽영희 <span className="text-stone-400 text-xs ml-1">의 장남</span>
+                    박남용 · 곽영희<span className="text-stone-400 text-xs ml-1">의</span><span className="pl- text-stone-500 text-sm tracking-tighter mb-[2px]">아들</span>
                 </span>
                 <strong className="text-xl font-bold leading-none text-stone-900">형묵</strong>
             </div>
 
             <div className="flex justify-center items-end gap-3">
                 <span className="text-stone-500 text-sm tracking-tighter mb-[2px]">
-                    000 · 000 <span className="text-stone-400 text-xs ml-1">의 장녀</span>
+                    문장혁 · 김계숙<span className="text-stone-400 text-xs ml-1">의</span><span className="pl-2 text-stone-500 text-sm tracking-tighter mb-[2px]">딸</span>
                 </span>
                 <strong className="text-xl font-bold leading-none text-stone-900">원영</strong>
             </div>

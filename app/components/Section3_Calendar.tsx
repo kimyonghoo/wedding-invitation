@@ -60,27 +60,14 @@ const Section3_Calendar = () => {
   };
 
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden`}>
-      
-      {/* 1. 배경 이미지 */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/modern-bg.png"
-          alt="Calendar Background"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-white/20"></div>
-      </div>
-
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden wedding-bg`}>
       {/* 2. 메인 콘텐츠 카드 */}
       <motion.div
          initial={{ opacity: 0, y: 30 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px" }}
          transition={{ duration: 0.8, ease: "easeOut" }}
-         className="relative z-10 w-full max-w-sm bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-8 flex flex-col items-center"
+         className="relative z-10 w-full max-w-sm bg-white/70 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-8 flex flex-col items-center"
       >
         {/* 타이틀: 고운바탕 */}
         <h2 className={`${koreanFont.className} text-xl font-bold mb-3 text-stone-800 text-center tracking-wide`}>
