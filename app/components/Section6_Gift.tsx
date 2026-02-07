@@ -210,6 +210,15 @@ const Section6_Gift = () => {
         </div>
         
       </motion.div>
+
+      {/* 4. 스크롤 안내 (폰트 적용) */}
+        <motion.div 
+            animate={{ y: [0, 8, 0], opacity: [0.4, 0.8, 0.4] }} 
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            className="absolute bottom-6 z-30 text-stone-500 flex flex-col items-center gap-2"
+        >
+            <span className={`${englishFont.className} text-[10px] tracking-[0.2em] font-medium`}>SCROLL</span>
+        </motion.div>
     </section>
   );
 };
