@@ -130,19 +130,19 @@ const Section6_Gift = () => {
                     {activeTab === 'groom' ? (
                         <div className="w-full flex justify-between items-center animate-in fade-in duration-300">
                             <div>
-                                <span className="text-xs text-stone-500 block mb-0.5">국민은행 (박형묵)</span>
+                                <span className="text-xs text-stone-500 block mb-0.5">우리은행 (박형묵)</span>
                                 {/* 숫자 폰트: Playfair Display */}
                                 <span className={`${koreanFont.className} text-sm text-stone-800 font-bold tracking-tight`}>123-456-7890</span>
                             </div>
-                            <button onClick={() => copy('1234567890')} className="text-[10px] bg-stone-800 text-white px-2 py-1.5 rounded-sm hover:bg-stone-700 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
+                            <button onClick={() => copy('1002441560976')} className="text-[10px] bg-stone-800 text-white px-2 py-1.5 rounded-sm hover:bg-stone-700 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
                         </div>
                     ) : (
                         <div className="w-full flex justify-between items-center animate-in fade-in duration-300">
                             <div>
-                                <span className="text-xs text-stone-500 block mb-0.5">우리은행 (문원영)</span>
+                                <span className="text-xs text-stone-500 block mb-0.5">하나은행 (문원영)</span>
                                 <span className={`${koreanFont.className} text-sm text-stone-800 font-bold tracking-tight`}>1002-123-4444</span>
                             </div>
-                            <button onClick={() => copy('10021234444')} className="text-[10px] bg-amber-700 text-white px-2 py-1.5 rounded-sm hover:bg-amber-600 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
+                            <button onClick={() => copy('23191058617507')} className="text-[10px] bg-amber-700 text-white px-2 py-1.5 rounded-sm hover:bg-amber-600 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
                         </div>
                     )}
                 </div>
