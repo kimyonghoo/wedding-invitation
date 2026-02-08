@@ -10,12 +10,14 @@ import Section7_Closing from '@/app/components/Section7_Closing';
 
 // 1. 대문자로 import 수정
 import BackgroundEffect from '@/app/components/BackgroundEffect';
+import IntroOverlay from '@/app/components/IntroOverlay'; // [추가]
+import FallingPetals from '@/app/components/FallingPetals'; // [추가]
 
 export default function Home() {
   return (
     <main className="snap-container scrollbar-hide relative">
-      {/* 2. 대문자로 컴포넌트 사용 */}
-      <BackgroundEffect />
+      <IntroOverlay />   {/* [추가] 맨 위에 배치 (z-index가 높아서 상관없음) */}
+      <FallingPetals />  {/* [추가] 벚꽃 효과 */}
       
       {/* BackgroundEffect가 fixed 포지션이라 순서는 상관없지만, 
           논리적으로 배경 -> 컨텐츠 순서가 좋습니다. 

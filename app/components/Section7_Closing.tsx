@@ -60,12 +60,12 @@ const Section7_Closing = () => {
           viewport={{ once: true }}
           transition={{
             type: "spring",
-            stiffness: 40,
+            stiffness: 30,
             damping: 12,
             mass: 1.2,
             delay: 0.5       
           }}
-          className="relative pt-[15vh]" // 와이어 길이만큼 띄움
+          className="relative pt-[10vh]" // 와이어 길이만큼 띄움
         >
             {/* 와이어 연결 고리 */}
             <div className="absolute -top-[10px] left-1/2 -translate-x-1/2 flex flex-col items-center z-0">
