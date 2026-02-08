@@ -18,7 +18,7 @@ const englishFont = Playfair_Display({
 
 const Section2_Quote = () => {
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className} wedding-bg`}>
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}

@@ -80,7 +80,7 @@ const Section6_Gift = () => {
 
   return (
     // [레이아웃 통일] koreanFont 적용
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className} wedding-bg`}>
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className}`}>
 
       {/* 2. 메인 콘텐츠 카드 */}
       <motion.div 

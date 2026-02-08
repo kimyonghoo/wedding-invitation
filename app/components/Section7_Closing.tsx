@@ -20,7 +20,7 @@ const englishFont = Playfair_Display({
 
 const Section7_Closing = () => {
   return (
-    <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50 wedding-bg">
+    <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50">
       
       {/* 2. 액자 + 와이어 (위쪽으로 배치) */}
       <motion.div 

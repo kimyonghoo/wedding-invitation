@@ -1,4 +1,5 @@
 // app/page.tsx
+import FixedBackground from '@/app/components/FixedBackground'; // [추가]
 
 import Section1_Main from '@/app/components/Section1_Main';
 import Section2_Quote from '@/app/components/Section2_Quote';
@@ -8,8 +9,6 @@ import Section5_Map from '@/app/components/Section5_Map';
 import Section6_Gift from '@/app/components/Section6_Gift';
 import Section7_Closing from '@/app/components/Section7_Closing';
 
-// 1. 대문자로 import 수정
-import BackgroundEffect from '@/app/components/BackgroundEffect';
 import IntroOverlay from '@/app/components/IntroOverlay'; // [추가]
 import FallingPetals from '@/app/components/FallingPetals'; // [추가]
 
@@ -24,7 +23,7 @@ export default function Home() {
           각 섹션(Section1~6) 내부에 z-index나 relative가 설정되어 있어야 
           배경 위에 정상적으로 뜹니다. (앞서 드린 코드엔 다 적용되어 있습니다)
       */}
-      
+      <FixedBackground />
       <Section1_Main />
       <Section2_Quote />
       <Section3_Calendar />

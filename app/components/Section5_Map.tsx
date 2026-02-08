@@ -30,7 +30,7 @@ const Section5_Map = () => {
   const HOTEL_LNG = 126.945371;
 
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className} wedding-bg`}>
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
       
       <motion.div 
         initial={{ opacity: 0, y: 30 }} 

@@ -84,7 +84,7 @@ const Section4_Gallery = () => {
   };
 
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className} wedding-bg`}>
+    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
       
       {/* 2. 썸네일 그리드 카드 */}
       <motion.div

@@ -20,7 +20,7 @@ const englishFont = Playfair_Display({
 
 const Section1_Main = () => {
   return (
-    <section className={`snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden wedding-bg`}>
+    <section className={`snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden`}>
       
       {/* 2. 상단 텍스트 */}
       <div className="absolute top-[10vh] w-full z-20 flex flex-col items-center text-center px-4">
