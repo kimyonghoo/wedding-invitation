@@ -132,7 +132,7 @@ const Section6_Gift = () => {
                             <div>
                                 <span className="text-xs text-stone-500 block mb-0.5">국민은행 (박형묵)</span>
                                 {/* 숫자 폰트: Playfair Display */}
-                                <span className={`${englishFont.className} text-sm text-stone-800 font-bold tracking-tight`}>123-456-7890</span>
+                                <span className={`${koreanFont.className} text-sm text-stone-800 font-bold tracking-tight`}>123-456-7890</span>
                             </div>
                             <button onClick={() => copy('1234567890')} className="text-[10px] bg-stone-800 text-white px-2 py-1.5 rounded-sm hover:bg-stone-700 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
                         </div>
@@ -140,7 +140,7 @@ const Section6_Gift = () => {
                         <div className="w-full flex justify-between items-center animate-in fade-in duration-300">
                             <div>
                                 <span className="text-xs text-stone-500 block mb-0.5">우리은행 (문원영)</span>
-                                <span className={`${englishFont.className} text-sm text-stone-800 font-bold tracking-tight`}>1002-123-4444</span>
+                                <span className={`${koreanFont.className} text-sm text-stone-800 font-bold tracking-tight`}>1002-123-4444</span>
                             </div>
                             <button onClick={() => copy('10021234444')} className="text-[10px] bg-amber-700 text-white px-2 py-1.5 rounded-sm hover:bg-amber-600 transition-colors flex items-center gap-1 shadow-sm shrink-0 ml-2"><Copy size={10} /> 복사</button>
                         </div>
@@ -192,7 +192,7 @@ const Section6_Gift = () => {
                             <div className="flex justify-between items-baseline mb-1">
                                 <span className="font-bold text-stone-800 text-xs truncate max-w-[80px]">{msg.name}</span>
                                 {/* 날짜: Playfair Display */}
-                                <span className={`${englishFont.className} text-[9px] text-stone-400 font-light whitespace-nowrap`}>
+                                <span className={`${koreanFont.className} text-[9px] text-stone-400 font-light whitespace-nowrap`}>
                                     {new Date(msg.created_at).toLocaleDateString().slice(2)}
                                 </span>
                             </div>
