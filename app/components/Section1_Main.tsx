@@ -126,7 +126,7 @@ const Section1_Main = () => {
             <div className="relative z-10 p-3 bg-white shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-[75vw] max-w-[380px] aspect-[3/4]">
                 <div className="relative w-full h-full bg-stone-50 overflow-hidden border border-stone-100">
                     <Image 
-                        src="/images/wedding/gallery-3.jpg" // 메인 사진
+                        src="/images/wedding/section1.jpg" // 메인 사진
                         alt="Wedding Couple"
                         fill
                         className="object-cover"

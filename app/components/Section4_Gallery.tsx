@@ -18,16 +18,8 @@ const englishFont = Playfair_Display({
   display: 'swap',
 });
 
-const images = [
-  '/images/wedding/gallery-1.jpg',
-  '/images/wedding/gallery-2.jpg',
-  '/images/wedding/gallery-3.jpg',
-  '/images/wedding/gallery-4.jpg',
-  '/images/wedding/gallery-5.jpg',
-  '/images/wedding/gallery-6.jpg',
-  '/images/wedding/gallery-7.jpg',
-  '/images/wedding/gallery-8.jpg',
-];
+// 이미지 21개 생성
+const images = Array.from({ length: 21 }, (_, i) => `/images/wedding/gallery-${i + 1}.jpg`);
 
 const Section4_Gallery = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -50,13 +42,11 @@ const Section4_Gallery = () => {
     }
   };
 
-  // [수정] 아주 부드럽고 느린 전환 효과 (Slow Fade + Soft Slide)
   const slideVariants: Variants = {
     enter: (dir: number) => ({
-      // 이동 거리를 100%가 아닌 50px로 줄여서 '휙' 지나가는 느낌 제거
       x: dir > 0 ? 50 : -50, 
       opacity: 0,
-      scale: 0.96, // 크기 변화도 아주 살짝만
+      scale: 0.96, 
     }),
     center: {
       zIndex: 1,
@@ -64,9 +54,8 @@ const Section4_Gallery = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        // [핵심] stiffness를 300->40으로 낮춤 (숫자가 낮을수록 느림)
         x: { type: "spring", stiffness: 40, damping: 20, mass: 1 }, 
-        opacity: { duration: 0.8, ease: "easeInOut" }, // 0.8초 동안 천천히 페이드
+        opacity: { duration: 0.8, ease: "easeInOut" },
         scale: { duration: 0.8, ease: "easeOut" }
       }
     },
@@ -84,17 +73,19 @@ const Section4_Gallery = () => {
   };
 
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
+    // [수정] min-h-screen 제거하고 적당한 padding으로 높이 조절
+    <section className={`snap-section relative w-full flex flex-col items-center justify-center py-20 px-4 overflow-hidden ${koreanFont.className}`}>
       
-      {/* 2. 썸네일 그리드 카드 */}
+      {/* 2. 썸네일 그리드 컨테이너 */}
       <motion.div
          initial={{ opacity: 0, y: 30 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px" }}
          transition={{ duration: 0.8, ease: "easeOut" }}
-         className="relative z-10 w-full max-w-sm bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-8"
+         // max-w-xl로 약간 넓힘
+         className="relative z-10 w-full max-w-xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-6 md:p-8"
       >
-        <div className="mb-8 text-center">
+        <div className="mb-6 text-center">
           <p className={`${englishFont.className} text-amber-700/80 text-[10px] font-bold tracking-[0.3em] mb-2 uppercase`}>
             Gallery
           </p>
@@ -103,35 +94,47 @@ const Section4_Gallery = () => {
           </h2>
         </div>
 
-        {/* 3열 그리드 */}
-        <div className="grid grid-cols-3 gap-2">
-          {images.map((src, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => { setDirection(0); setSelectedIndex(i); }}
-              className="relative aspect-square cursor-pointer rounded-sm overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all group border border-white/50"
-            >
-              <Image 
-                src={src} 
-                alt={`gallery-${i}`} 
-                fill 
-                className="object-cover transition-transform duration-500 group-hover:scale-110" 
-                sizes="(max-width: 768px) 33vw, 25vw" 
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <Maximize2 className="text-white drop-shadow-md w-6 h-6" />
-              </div>
-            </motion.div>
-          ))}
+        {/* [핵심 수정] 가로 스크롤 영역 */}
+        {/* -mx-6 px-6: 부모 패딩을 무시하고 화면 끝까지 스크롤 영역 확장 */}
+        <div className="overflow-x-auto pb-4 -mx-6 px-6 md:-mx-8 md:px-8 snap-x touch-pan-x scrollbar-hide">
+          {/* grid-rows-3: 3행 고정 */}
+          {/* grid-flow-col: 아이템을 세로가 아닌 가로로 먼저 채움 */}
+          {/* w-max: 내용물만큼 너비 확보 */}
+          <div className="grid grid-rows-3 grid-flow-col gap-1 w-max">
+            {images.map((src, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => { setDirection(0); setSelectedIndex(i); }}
+                // [수정] h-24(모바일), h-32(태블릿)로 높이 고정 + aspect-square로 정사각형 유지
+                // snap-start: 스크롤 시 아이템 시작점에 딱멈춤
+                className="relative aspect-square h-24 md:h-32 cursor-pointer rounded-sm overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all group border border-white/50 snap-start"
+              >
+                <Image 
+                  src={src} 
+                  alt={`gallery-${i}`} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                  // 사이즈 최적화
+                  sizes="(max-width: 768px) 150px, 200px" 
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <Maximize2 className="text-white drop-shadow-md w-6 h-6" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-        <p className="text-center text-[11px] text-stone-500 mt-6 tracking-wide opacity-80">
-            사진을 터치하면 크게 보실 수 있습니다.
+        
+        <p className="text-center text-[11px] text-stone-500 mt-4 tracking-wide opacity-80 flex items-center justify-center gap-1">
+            {/* 스크롤 힌트 아이콘 추가 */}
+            <ChevronRight size={14} className="animate-pulse text-stone-400" />
+            옆으로 넘겨 사진을 확인해보세요.
         </p>
       </motion.div>
 
-      {/* 3. 확대된 라이트박스 */}
+      {/* 3. 확대된 라이트박스 (기능 유지) */}
       <AnimatePresence>
         {selectedIndex !== null && (
           <motion.div

@@ -4,6 +4,7 @@ import FixedBackground from '@/app/components/FixedBackground'; // [추가]
 import Section1_Main from '@/app/components/Section1_Main';
 import Section2_Quote from '@/app/components/Section2_Quote';
 import Section3_Calendar from '@/app/components/Section3_Calendar';
+import Section_RSVP from '@/app/components/Section_RSVP'; // 추가
 import Section4_Gallery from '@/app/components/Section4_Gallery';
 import Section5_Map from '@/app/components/Section5_Map';
 import Section6_Gift from '@/app/components/Section6_Gift';
@@ -27,6 +28,7 @@ export default function Home() {
       <Section1_Main />
       <Section2_Quote />
       <Section3_Calendar />
+      <Section_RSVP />
       <Section4_Gallery />
       <Section5_Map />
       <Section6_Gift />
