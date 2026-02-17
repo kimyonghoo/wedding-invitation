@@ -187,7 +187,7 @@ const Section_RSVP = () => {
                           onChange={(e) => setFormData({...formData, privacy: e.target.checked})} 
                       />
                       <span className="text-[10px] text-stone-500 group-hover:text-stone-700 transition-colors">
-                          원활한 예식 진행을 위한 개인정보 수집 및 이용에 동의합니다.
+                          개인정보 수집 및 이용에 동의합니다.
                       </span>
                   </label>
               </div>
