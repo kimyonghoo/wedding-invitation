@@ -42,38 +42,41 @@ const Section4_Gallery = () => {
     }
   };
 
+  // [수정 핵심] 애니메이션 설정 변경 (빠르고 끊어지는 느낌)
   const slideVariants: Variants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 50 : -50, 
+      x: dir > 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.96, 
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
-      scale: 1,
       transition: {
-        x: { type: "spring", stiffness: 40, damping: 20, mass: 1 }, 
-        opacity: { duration: 0.8, ease: "easeInOut" },
-        scale: { duration: 0.8, ease: "easeOut" }
+        x: { 
+          type: "tween", 
+          ease: "linear", // 가속도 없이 일정하게
+          duration: 0.3   // 0.3초 동안 빠르게 이동
+        },
+        opacity: { duration: 0.2 }
       }
     },
     exit: (dir: number) => ({
       zIndex: 0,
-      x: dir < 0 ? 50 : -50,
+      x: dir < 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.96,
       transition: {
-        x: { type: "spring", stiffness: 40, damping: 20, mass: 1 },
-        opacity: { duration: 0.8, ease: "easeInOut" },
-        scale: { duration: 0.8, ease: "easeOut" }
+        x: { 
+          type: "tween", 
+          ease: "linear", 
+          duration: 0.3 
+        },
+        opacity: { duration: 0.2 }
       }
     })
   };
 
   return (
-    // [수정] min-h-screen 제거하고 적당한 padding으로 높이 조절
     <section className={`snap-section relative w-full flex flex-col items-center justify-center py-20 px-4 overflow-hidden ${koreanFont.className}`}>
       
       {/* 2. 썸네일 그리드 컨테이너 */}
@@ -82,7 +85,6 @@ const Section4_Gallery = () => {
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px" }}
          transition={{ duration: 0.8, ease: "easeOut" }}
-         // max-w-xl로 약간 넓힘
          className="relative z-10 w-full max-w-xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-6 md:p-8"
       >
         <div className="mb-6 text-center">
@@ -94,12 +96,7 @@ const Section4_Gallery = () => {
           </h2>
         </div>
 
-        {/* [핵심 수정] 가로 스크롤 영역 */}
-        {/* -mx-6 px-6: 부모 패딩을 무시하고 화면 끝까지 스크롤 영역 확장 */}
         <div className="overflow-x-auto pb-4 -mx-6 px-6 md:-mx-8 md:px-8 snap-x touch-pan-x scrollbar-hide">
-          {/* grid-rows-3: 3행 고정 */}
-          {/* grid-flow-col: 아이템을 세로가 아닌 가로로 먼저 채움 */}
-          {/* w-max: 내용물만큼 너비 확보 */}
           <div className="grid grid-rows-3 grid-flow-col gap-1 w-max">
             {images.map((src, i) => (
               <motion.div
@@ -107,8 +104,6 @@ const Section4_Gallery = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => { setDirection(0); setSelectedIndex(i); }}
-                // [수정] h-24(모바일), h-32(태블릿)로 높이 고정 + aspect-square로 정사각형 유지
-                // snap-start: 스크롤 시 아이템 시작점에 딱멈춤
                 className="relative aspect-square h-24 md:h-32 cursor-pointer rounded-sm overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all group border border-white/50 snap-start"
               >
                 <Image 
@@ -116,7 +111,6 @@ const Section4_Gallery = () => {
                   alt={`gallery-${i}`} 
                   fill 
                   className="object-cover transition-transform duration-700 group-hover:scale-110" 
-                  // 사이즈 최적화
                   sizes="(max-width: 768px) 150px, 200px" 
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -128,20 +122,19 @@ const Section4_Gallery = () => {
         </div>
         
         <p className="text-center text-[11px] text-stone-500 mt-4 tracking-wide opacity-80 flex items-center justify-center gap-1">
-            {/* 스크롤 힌트 아이콘 추가 */}
             <ChevronRight size={14} className="animate-pulse text-stone-400" />
             옆으로 넘겨 사진을 확인해보세요.
         </p>
       </motion.div>
 
-      {/* 3. 확대된 라이트박스 (기능 유지) */}
+      {/* 3. 확대된 라이트박스 */}
       <AnimatePresence>
         {selectedIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }} // 켜질 때도 빠르게 (0.5 -> 0.2)
             onClick={() => setSelectedIndex(null)}
             className="fixed inset-0 z-[99999] flex items-center justify-center bg-white/95 backdrop-blur-xl px-4"
           >

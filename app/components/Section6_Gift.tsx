@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/app/lib/supabaseClient'; 
-import { Copy, MessageCircle, Loader2, Send, X, ChevronRight } from 'lucide-react';
+import { Copy, MessageCircle, Loader2, Send, X, ChevronRight, ChevronDown } from 'lucide-react';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -88,8 +88,17 @@ const Section6_Gift = () => {
     alert('계좌번호가 복사되었습니다.');
   };
 
+  // [기능 추가] 다음 섹션으로 스크롤 이동
+  const scrollToNext = () => {
+    const currentSection = document.querySelector('.gift-section');
+    if (currentSection?.nextElementSibling) {
+      currentSection.nextElementSibling.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className}`}>
+    // [식별자 추가] .gift-section 클래스 추가
+    <section className={`gift-section snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className}`}>
 
       {/* 2. 메인 콘텐츠 카드 */}
       <motion.div 
@@ -231,7 +240,6 @@ const Section6_Gift = () => {
                                         <Copy size={10} /> 복사
                                     </button>
                                 </div>
-                                {/* [수정] 폰트 변경: englishFont -> koreanFont */}
                                 <p className={`${koreanFont.className} text-stone-800 text-sm font-bold tracking-wide mt-1`}>
                                     {acc.account}
                                 </p>
@@ -249,14 +257,27 @@ const Section6_Gift = () => {
         )}
       </AnimatePresence>
       
-      {/* 스크롤 안내 */}
-      <motion.div 
-          animate={{ y: [0, 8, 0], opacity: [0.4, 0.8, 0.4] }} 
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="absolute bottom-6 z-30 text-stone-500 flex flex-col items-center gap-2"
+      {/* [수정] 스크롤 유도 버튼 (텍스트 + 아이콘) */}
+      <motion.button 
+          onClick={scrollToNext}
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: 1,
+            y: [0, 8, 0]
+          }} 
+          transition={{ 
+            opacity: { delay: 1, duration: 1 },
+            y: { repeat: Infinity, duration: 1.8, ease: "easeInOut" }
+          }}
+          className="absolute bottom-8 z-30 flex flex-col items-center gap-1.5 cursor-pointer hover:opacity-100 transition-opacity"
       >
-          <span className={`${englishFont.className} text-[10px] tracking-[0.2em] font-medium`}>SCROLL</span>
-      </motion.div>
+          <span className="text-[11px] text-stone-600 font-bold tracking-widest bg-white/70 px-3 py-1 rounded-full backdrop-blur-sm shadow-sm border border-white">
+            마지막 인사
+          </span>
+          <div className="w-8 h-8 rounded-full bg-stone-800/90 text-white flex items-center justify-center shadow-md">
+            <ChevronDown size={18} />
+          </div>
+      </motion.button>
 
     </section>
   );

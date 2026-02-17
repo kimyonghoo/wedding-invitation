@@ -82,7 +82,7 @@ const Section7_Closing = () => {
             <div className="relative z-10 p-3 bg-white shadow-[0_15px_35px_rgba(0,0,0,0.15)] w-[65vw] max-w-[280px] aspect-[3/4]">
                 <div className="relative w-full h-full bg-stone-50 overflow-hidden border border-stone-100">
                     <Image 
-                        src="/images/wedding/gallery-1.jpg" 
+                        src="/images/wedding/gallery-10.jpg" 
                         alt="Closing Couple"
                         fill
                         className="object-cover"
@@ -102,7 +102,7 @@ const Section7_Closing = () => {
           whileInView={{ width: "40px" }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 1.0 }}
-          className="h-[1px] bg-stone-400 mb-6"
+          className="h-[1px] bg-stone-400 mb-4"
         />
 
         {/* 감사 메시지 (이름 반영) */}
@@ -132,7 +132,7 @@ const Section7_Closing = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, delay: 1.5, ease: "easeOut" }}
-          className={`${koreanFont.className} text-2xl md:text-3xl font-bold text-stone-800 tracking-wide mb-6 drop-shadow-sm`}
+          className={`${koreanFont.className} text-2xl md:text-3xl font-bold text-stone-800 tracking-wide mb-4 drop-shadow-sm`}
         >
           4월 18일에 만나요
         </motion.h2>

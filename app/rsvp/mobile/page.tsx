@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { supabase } from '@/app/lib/supabaseClient';
-import { Lock, RefreshCw, LogOut, Loader2, Users, Utensils, X, List, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
+import { Lock, RefreshCw, LogOut, Loader2, Users, Utensils, X, List, ChevronRight, Clock, CheckCircle2, Trash2 } from 'lucide-react';
 
 interface RsvpData {
   id: number;
@@ -15,12 +15,12 @@ interface RsvpData {
 }
 
 export default function RsvpMobilePage() {
+  // ... (이전 코드와 동일: 상태, fetchData, calculateStats, handleLogin, handleResetData 등) ...
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [rsvpList, setRsvpList] = useState<RsvpData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
-  // 모달 제어 및 필터 상태
+
   const [showModal, setShowModal] = useState(false);
   const [filterType, setFilterType] = useState<'all' | 'groom' | 'bride'>('all');
 
@@ -85,13 +85,36 @@ export default function RsvpMobilePage() {
     }
   };
 
-  // 모달 열기 함수 (필터 지정)
+  const handleResetData = async () => {
+    const confirmMsg = prompt("모든 데이터를 삭제하시겠습니까?\n삭제하려면 관리자 비밀번호를 입력하세요.");
+
+    if (confirmMsg === 'wedding0418%$') {
+      const doubleCheck = confirm("정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.");
+      if (!doubleCheck) return;
+
+      setIsLoading(true);
+      const { error } = await supabase
+        .from('rsvp')
+        .delete()
+        .neq('id', 0);
+
+      if (error) {
+        alert('삭제 실패: ' + error.message);
+      } else {
+        alert('모든 데이터가 초기화되었습니다.');
+        fetchData();
+      }
+      setIsLoading(false);
+    } else if (confirmMsg !== null) {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
+  };
+
   const openModal = (type: 'all' | 'groom' | 'bride') => {
     setFilterType(type);
     setShowModal(true);
   };
 
-  // 필터링된 리스트 가져오기
   const getFilteredList = () => {
     if (filterType === 'all') return rsvpList;
     return rsvpList.filter(item => {
@@ -100,7 +123,6 @@ export default function RsvpMobilePage() {
     });
   };
 
-  // 모달 제목 가져오기
   const getModalTitle = () => {
     if (filterType === 'groom') return '신랑측 명단';
     if (filterType === 'bride') return '신부측 명단';
@@ -112,17 +134,36 @@ export default function RsvpMobilePage() {
       <div className="min-h-[100dvh] bg-neutral-100 flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-xs">
           <div className="flex justify-center mb-8">
-            <div className="p-4 bg-white rounded-2xl shadow-sm border border-neutral-200">
-              <Lock className="w-6 h-6 text-neutral-900" />
+            <div className="relative p-3 bg-neutral-900 rounded-full mb-4 overflow-hidden">
+              {/* 아이콘 (빛 위에 표시되도록 z-index 설정) */}
+              <Lock className="relative z-10 w-5 h-5 text-white" />
+
+              {/* 쉬머 효과 레이어 */}
+              {/* via-white/30: 빛의 밝기 조절 */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+
+              <style jsx>{`
+                  @keyframes shimmer {
+                      0% {
+                          transform: translateX(-100%) skewX(-20deg);
+                      }
+                      100% {
+                          transform: translateX(200%) skewX(-20deg);
+                      }
+                  }
+                  .animate-shimmer {
+                      animation: shimmer 2.0s infinite; /* 0.8초로 빠르게 설정 */
+                  }
+              `}</style>
             </div>
           </div>
           <h1 className="text-xl font-bold text-center text-neutral-900 mb-2">RSVP Mobile</h1>
           <p className="text-center text-neutral-400 text-sm mb-8">관리자 비밀번호를 입력하세요</p>
-          
+
           <form onSubmit={handleLogin} className="space-y-3">
             <input
               type="password"
-              inputMode="text" 
+              inputMode="text"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -133,7 +174,7 @@ export default function RsvpMobilePage() {
               type="submit"
               className="w-full bg-neutral-900 text-white py-4 rounded-xl font-bold text-base active:scale-[0.98] transition-transform shadow-md"
             >
-              대시보드 접속
+              관리자 로그인
             </button>
           </form>
         </div>
@@ -148,6 +189,14 @@ export default function RsvpMobilePage() {
       <nav className="bg-white/80 backdrop-blur-md border-b border-neutral-200 px-4 py-3 sticky top-0 z-40 flex justify-between items-center h-14">
         <h1 className="text-lg font-bold tracking-tight text-neutral-900">웨딩 대시보드</h1>
         <div className="flex gap-2">
+          {/* [수정] text-neutral-400 -> text-red-500 으로 변경하여 상시 붉은색 표시 */}
+          <button
+            onClick={handleResetData}
+            className="p-2 text-red-500 ransition-colors"
+          >
+            <Trash2 size={20} />
+          </button>
+
           <button onClick={fetchData} className="p-2 text-neutral-600 hover:bg-neutral-100 rounded-full active:bg-neutral-200 transition-colors">
             <RefreshCw size={20} className={isLoading ? "animate-spin" : ""} />
           </button>
@@ -158,7 +207,7 @@ export default function RsvpMobilePage() {
       </nav>
 
       <main className="p-4 space-y-4 pb-24">
-        
+
         {/* 요약 통계 */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between h-28">
@@ -190,63 +239,62 @@ export default function RsvpMobilePage() {
           </div>
         </div>
 
-        {/* 신랑/신부 비율 (클릭 가능하도록 수정) */}
+        {/* 신랑/신부 비율 */}
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm">
-             <div className="flex justify-between items-center mb-3">
-                <span className="text-[11px] font-bold uppercase text-neutral-400">Side Breakdown</span>
-                <span className="text-xs font-mono text-neutral-500 font-bold">{stats.groomCount} vs {stats.brideCount}</span>
-             </div>
-             <div className="w-full bg-neutral-100 h-3 rounded-full overflow-hidden flex mb-3">
-                <div className="bg-blue-500 h-full transition-all duration-500" style={{ width: `${(stats.groomCount / (stats.totalGuests || 1)) * 100}%` }}></div>
-                <div className="bg-rose-400 h-full transition-all duration-500" style={{ width: `${(stats.brideCount / (stats.totalGuests || 1)) * 100}%` }}></div>
-             </div>
-             
-             {/* [수정] 클릭 가능한 영역 생성 */}
-             <div className="flex justify-between text-xs font-semibold">
-                <button 
-                    onClick={() => openModal('groom')}
-                    className="flex items-center gap-1.5 text-blue-600 hover:bg-blue-50 px-2 py-1 -ml-2 rounded-lg transition-colors"
-                >
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div> 
-                    신랑측 {stats.groomCount}명
-                    <ChevronRight size={12} className="text-blue-400" />
-                </button>
-                <button 
-                    onClick={() => openModal('bride')}
-                    className="flex items-center gap-1.5 text-rose-500 hover:bg-rose-50 px-2 py-1 -mr-2 rounded-lg transition-colors"
-                >
-                    <div className="w-2 h-2 rounded-full bg-rose-400"></div> 
-                    신부측 {stats.brideCount}명
-                    <ChevronRight size={12} className="text-rose-300" />
-                </button>
-             </div>
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[11px] font-bold uppercase text-neutral-400">Side Breakdown</span>
+            <span className="text-xs font-mono text-neutral-500 font-bold">{stats.groomCount} vs {stats.brideCount}</span>
+          </div>
+          <div className="w-full bg-neutral-100 h-3 rounded-full overflow-hidden flex mb-3">
+            <div className="bg-blue-500 h-full transition-all duration-500" style={{ width: `${(stats.groomCount / (stats.totalGuests || 1)) * 100}%` }}></div>
+            <div className="bg-rose-400 h-full transition-all duration-500" style={{ width: `${(stats.brideCount / (stats.totalGuests || 1)) * 100}%` }}></div>
+          </div>
+
+          <div className="flex justify-between text-xs font-semibold">
+            <button
+              onClick={() => openModal('groom')}
+              className="flex items-center gap-1.5 text-blue-600 hover:bg-blue-50 px-2 py-1 -ml-2 rounded-lg transition-colors"
+            >
+              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+              신랑측 {stats.groomCount}명
+              <ChevronRight size={12} className="text-blue-400" />
+            </button>
+            <button
+              onClick={() => openModal('bride')}
+              className="flex items-center gap-1.5 text-rose-500 hover:bg-rose-50 px-2 py-1 -mr-2 rounded-lg transition-colors"
+            >
+              <div className="w-2 h-2 rounded-full bg-rose-400"></div>
+              신부측 {stats.brideCount}명
+              <ChevronRight size={12} className="text-rose-300" />
+            </button>
+          </div>
         </div>
 
         {/* 식사 상세 */}
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm">
-             <div className="flex justify-between items-center mb-3">
-                <span className="text-[11px] font-bold uppercase text-neutral-400">Meal Details</span>
-             </div>
-             <div className="w-full bg-neutral-100 h-3 rounded-full overflow-hidden flex mb-3">
-                <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: `${(stats.mealYes / (stats.totalGuests || 1)) * 100}%` }}></div>
-                <div className="bg-amber-400 h-full transition-all duration-500" style={{ width: `${(stats.mealUnknown / (stats.totalGuests || 1)) * 100}%` }}></div>
-                <div className="bg-neutral-300 h-full transition-all duration-500" style={{ width: `${(stats.mealNo / (stats.totalGuests || 1)) * 100}%` }}></div>
-             </div>
-             <div className="grid grid-cols-3 gap-1 text-center text-xs">
-                <div className="bg-emerald-50 p-1.5 rounded text-emerald-700 font-bold">예정 {stats.mealYes}</div>
-                <div className="bg-amber-50 p-1.5 rounded text-amber-700 font-bold">미정 {stats.mealUnknown}</div>
-                <div className="bg-neutral-100 p-1.5 rounded text-neutral-600 font-bold">안함 {stats.mealNo}</div>
-             </div>
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[11px] font-bold uppercase text-neutral-400">Meal Details</span>
+          </div>
+          <div className="w-full bg-neutral-100 h-3 rounded-full overflow-hidden flex mb-3">
+            <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: `${(stats.mealYes / (stats.totalGuests || 1)) * 100}%` }}></div>
+            <div className="bg-amber-400 h-full transition-all duration-500" style={{ width: `${(stats.mealUnknown / (stats.totalGuests || 1)) * 100}%` }}></div>
+            <div className="bg-neutral-300 h-full transition-all duration-500" style={{ width: `${(stats.mealNo / (stats.totalGuests || 1)) * 100}%` }}></div>
+          </div>
+          <div className="grid grid-cols-3 gap-1 text-center text-xs">
+            <div className="bg-emerald-50 p-1.5 rounded text-emerald-700 font-bold">예정 {stats.mealYes}</div>
+            <div className="bg-amber-50 p-1.5 rounded text-amber-700 font-bold">미정 {stats.mealUnknown}</div>
+            <div className="bg-neutral-100 p-1.5 rounded text-neutral-600 font-bold">안함 {stats.mealNo}</div>
+          </div>
         </div>
 
         {/* 전체보기 버튼 */}
         <div className="pt-2">
-            <button 
-                onClick={() => openModal('all')}
-                className="w-full bg-neutral-900 text-white py-4 rounded-xl font-bold text-base shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-            >
-                <List size={18} /> 전체 명단 보기 ({rsvpList.length})
-            </button>
+          <button
+            onClick={() => openModal('all')}
+            className="w-full bg-neutral-900 text-white py-4 rounded-xl font-bold text-base shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+          >
+            <List size={18} /> 전체 명단 보기 ({rsvpList.length})
+          </button>
         </div>
 
       </main>
@@ -254,75 +302,75 @@ export default function RsvpMobilePage() {
       {/* 모달 */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-neutral-50 flex flex-col animate-in slide-in-from-bottom-10 duration-200">
-            {/* 모달 헤더 (동적 제목) */}
-            <div className="bg-white px-4 py-3 border-b border-neutral-200 flex justify-between items-center shadow-sm shrink-0 h-14">
-                <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-neutral-900">{getModalTitle()}</span>
-                    <span className="text-xs font-bold bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full">
-                        {displayList.length}
-                    </span>
-                </div>
-                <button 
-                    onClick={() => setShowModal(false)}
-                    className="p-2 -mr-2 text-neutral-500 hover:bg-neutral-100 rounded-full transition-colors"
-                >
-                    <X size={24} />
-                </button>
+          {/* 모달 헤더 */}
+          <div className="bg-white px-4 py-3 border-b border-neutral-200 flex justify-between items-center shadow-sm shrink-0 h-14">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-neutral-900">{getModalTitle()}</span>
+              <span className="text-xs font-bold bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full">
+                {displayList.length}
+              </span>
             </div>
+            <button
+              onClick={() => setShowModal(false)}
+              className="p-2 -mr-2 text-neutral-500 hover:bg-neutral-100 rounded-full transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
-            {/* 리스트 영역 */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-100">
-                {displayList.length === 0 ? (
-                    <div className="text-center py-10 text-neutral-400">해당하는 명단이 없습니다.</div>
-                ) : (
-                    displayList.map((item) => {
-                        const sideText = (item.side === 'groom' || item.side === '신랑측') ? '신랑측' : '신부측';
-                        const sideColor = sideText === '신랑측' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700';
-                        
-                        let mealText = '안함';
-                        let mealStyle = 'text-neutral-400 bg-neutral-100';
-                        
-                        if (item.meal === 'yes') { 
-                            mealText = '식사함'; 
-                            mealStyle = 'text-emerald-700 bg-emerald-50 border border-emerald-100'; 
-                        } else if (item.meal === '미정' || item.meal === 'unknown') { 
-                            mealText = '미정'; 
-                            mealStyle = 'text-amber-700 bg-amber-50 border border-amber-100'; 
-                        }
+          {/* 리스트 영역 */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-100">
+            {displayList.length === 0 ? (
+              <div className="text-center py-10 text-neutral-400">해당하는 명단이 없습니다.</div>
+            ) : (
+              displayList.map((item) => {
+                const sideText = (item.side === 'groom' || item.side === '신랑측') ? '신랑측' : '신부측';
+                const sideColor = sideText === '신랑측' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700';
 
-                        return (
-                            <div key={item.id} className="bg-white p-4 rounded-xl border border-neutral-200 shadow-sm">
-                                <div className="flex justify-between items-start mb-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-base font-bold text-neutral-900">{item.name}</span>
-                                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${sideColor}`}>
-                                            {sideText}
-                                        </span>
-                                    </div>
-                                    <div className={`text-xs px-2 py-1 rounded font-bold ${mealStyle}`}>
-                                        {mealText}
-                                    </div>
-                                </div>
-                                
-                                <div className="flex justify-between items-end border-t border-neutral-50 pt-2 mt-2">
-                                    <div className="flex items-center gap-1 text-xs text-neutral-400">
-                                        <Clock size={10} />
-                                        {new Date(item.created_at).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <span className="text-xs font-medium text-neutral-500">인원</span>
-                                        <span className="text-sm font-bold text-neutral-800 bg-neutral-50 px-2 py-0.5 rounded border border-neutral-100">
-                                            {item.count}명
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
-                {/* 하단 여백 */}
-                <div className="h-8"></div>
-            </div>
+                let mealText = '안함';
+                let mealStyle = 'text-neutral-400 bg-neutral-100';
+
+                if (item.meal === 'yes') {
+                  mealText = '식사함';
+                  mealStyle = 'text-emerald-700 bg-emerald-50 border border-emerald-100';
+                } else if (item.meal === '미정' || item.meal === 'unknown') {
+                  mealText = '미정';
+                  mealStyle = 'text-amber-700 bg-amber-50 border border-amber-100';
+                }
+
+                return (
+                  <div key={item.id} className="bg-white p-4 rounded-xl border border-neutral-200 shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-bold text-neutral-900">{item.name}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${sideColor}`}>
+                          {sideText}
+                        </span>
+                      </div>
+                      <div className={`text-xs px-2 py-1 rounded font-bold ${mealStyle}`}>
+                        {mealText}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-end border-t border-neutral-50 pt-2 mt-2">
+                      <div className="flex items-center gap-1 text-xs text-neutral-400">
+                        <Clock size={10} />
+                        {new Date(item.created_at).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-medium text-neutral-500">인원</span>
+                        <span className="text-sm font-bold text-neutral-800 bg-neutral-50 px-2 py-0.5 rounded border border-neutral-100">
+                          {item.count}명
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+            {/* 하단 여백 */}
+            <div className="h-8"></div>
+          </div>
         </div>
       )}
 

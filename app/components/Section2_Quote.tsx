@@ -28,7 +28,7 @@ const Section2_Quote = () => {
         className="relative z-10 w-full max-w-sm px-4 py-12 text-center"
       >
         {/* 장식 선 */}
-        <div className="w-[1px] h-10 bg-stone-500 mx-auto mb-6 opacity-50"></div>
+        <div className="w-[1px] h-6 bg-stone-500 mx-auto mb-6 opacity-50"></div>
 
         <p className={`${englishFont.className} text-amber-800 text-[11px] tracking-[0.3em] uppercase mb-4 font-medium drop-shadow-sm`}>
             Invitation
