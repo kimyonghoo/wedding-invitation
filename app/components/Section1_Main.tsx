@@ -41,7 +41,7 @@ const Section1_Main = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 3.5, ease: "easeOut" }} 
           // flex-row로 가로 배치 고정
-          className="flex flex-row items-center justify-center gap-3 md:gap-4 mb-6 whitespace-nowrap"
+          className="flex flex-row items-center justify-center gap-3 md:gap-4 mb-3 whitespace-nowrap"
         >
           {/* 신랑 이름 (text-xl로 축소, 자간 0.2em) */}
           <span className={`${koreanFont.className} text-xl md:text-3xl font-bold text-stone-900 tracking-[0.2em] drop-shadow-sm`}>
@@ -64,7 +64,7 @@ const Section1_Main = () => {
           initial={{ width: 0 }}
           animate={{ width: "30px" }}
           transition={{ duration: 1, delay: 4.0 }}
-          className="h-[1px] bg-stone-400/60 mb-5"
+          className="h-[1px] bg-stone-400/60 mb-3"
         />
 
         {/* 하단 멘트 */}
