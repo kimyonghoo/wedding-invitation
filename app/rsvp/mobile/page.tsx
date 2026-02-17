@@ -1,22 +1,8 @@
 'use client';
-import type { Metadata } from "next"; // 이 줄이 없으면 추가
+
 import { useState } from 'react';
 import { supabase } from '@/app/lib/supabaseClient';
 import { Lock, RefreshCw, LogOut, Loader2, Users, Utensils, X, List, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: "RSVP Mobile Admin",
-  description: "모바일 관리자 페이지",
-  robots: {
-    index: false,
-    follow: false,
-  },
-  openGraph: {
-    title: "RSVP Mobile Admin",
-    description: "모바일 관리자 페이지",
-    images: [], // 이미지 제거
-  },
-};
 
 interface RsvpData {
   id: number;

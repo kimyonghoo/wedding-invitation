@@ -1,23 +1,9 @@
 'use client';
 
-import type { Metadata } from "next"; // 이 줄이 없으면 추가
 import { useState } from 'react';
 import { supabase } from '@/app/lib/supabaseClient';
 import { Lock, RefreshCw, LogOut, Loader2, Users, Utensils, X, List, TrendingUp, PieChart, ChevronRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: "RSVP Admin",
-  description: "관리자 전용 페이지입니다.",
-  robots: {
-    index: false,
-    follow: false,
-  },
-  openGraph: {
-    title: "RSVP Admin",
-    description: "관리자 전용 페이지입니다.",
-    images: [], // 이미지를 빈 배열로 설정하여 상속 차단
-  },
-};
 interface RsvpData {
   id: number;
   created_at: string;
