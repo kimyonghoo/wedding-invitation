@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "박형묵 & 문원영 결혼식에 초대합니다",
     description: "2026년 4월 18일 오후 12시, 호텔나루서울 엠갤러리",
-    url: "https://our-sping-0428.vercel.app", // 실제 배포된 사이트 주소 (없으면 생략 가능)
+    url: "https://our-sping-0418.vercel.app", // 실제 배포된 사이트 주소 (없으면 생략 가능)
     siteName: "Wedding Invitation",
     images: [
       {
-        url: "/images/wedding/gallery-10.jpg", // public 폴더 안의 이미지 경로
+        url: "/images/wedding/gallery-20.jpg", // public 폴더 안의 이미지 경로
         width: 800,
         height: 800,
         alt: "결혼식 초대장 썸네일",
