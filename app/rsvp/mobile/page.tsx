@@ -2,20 +2,19 @@
 
 import { useState } from 'react';
 import { supabase } from '@/app/lib/supabaseClient';
-import { Lock, RefreshCw, LogOut, Loader2, Users, Utensils, X, List, ChevronRight, Clock, CheckCircle2, Trash2 } from 'lucide-react';
+import { Lock, RefreshCw, LogOut, Users, Utensils, X, List, ChevronRight, Clock, Trash2 } from 'lucide-react';
 
 interface RsvpData {
   id: number;
   created_at: string;
   name: string;
-  side: string;
+  side: string; // 'groom' | 'bride' | '신랑측' | '신부측'
   count: number;
   meal: string;
   privacy_consent: boolean;
 }
 
 export default function RsvpMobilePage() {
-  // ... (이전 코드와 동일: 상태, fetchData, calculateStats, handleLogin, handleResetData 등) ...
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [rsvpList, setRsvpList] = useState<RsvpData[]>([]);
@@ -33,6 +32,7 @@ export default function RsvpMobilePage() {
     mealNo: 0,
   });
 
+  // 데이터 불러오기
   const fetchData = async () => {
     setIsLoading(true);
     const { data, error } = await supabase
@@ -50,6 +50,7 @@ export default function RsvpMobilePage() {
     setIsLoading(false);
   };
 
+  // 통계 계산
   const calculateStats = (data: RsvpData[]) => {
     const newStats = {
       totalGuests: 0,
@@ -75,6 +76,7 @@ export default function RsvpMobilePage() {
     setStats(newStats);
   };
 
+  // 로그인 핸들러
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === 'wedding0418%$') {
@@ -85,6 +87,7 @@ export default function RsvpMobilePage() {
     }
   };
 
+  // 전체 초기화 (기존 유지)
   const handleResetData = async () => {
     const confirmMsg = prompt("모든 데이터를 삭제하시겠습니까?\n삭제하려면 관리자 비밀번호를 입력하세요.");
 
@@ -109,6 +112,41 @@ export default function RsvpMobilePage() {
       alert("비밀번호가 일치하지 않습니다.");
     }
   };
+
+  // ----------------------------------------------------------------
+  // [추가된 기능] 개별 아이템 삭제 핸들러 (이름 + 측 PK 기준)
+  // ----------------------------------------------------------------
+  const handleDeleteItem = async (item: RsvpData) => {
+    const sideLabel = (item.side === 'groom' || item.side === '신랑측') ? '신랑측' : '신부측';
+    
+    // 삭제 확인
+    const confirmed = confirm(`[${sideLabel}] "${item.name}" 님의 데이터를 삭제하시겠습니까?`);
+    if (!confirmed) return;
+
+    setIsLoading(true);
+
+    // 요청하신 대로 'name'과 'side'를 조건으로 삭제 (Composite Key 개념)
+    const { error } = await supabase
+      .from('rsvp')
+      .delete()
+      .eq('name', item.name)
+      .eq('side', item.side);
+
+    if (error) {
+      alert('삭제 실패: ' + error.message);
+    } else {
+      // UI 즉시 반영 (다시 fetch하지 않고 로컬 필터링으로 성능 최적화)
+      const updatedList = rsvpList.filter(
+        (i) => !(i.name === item.name && i.side === item.side)
+      );
+      
+      setRsvpList(updatedList);
+      calculateStats(updatedList); // 통계 재계산
+      alert('삭제되었습니다.');
+    }
+    setIsLoading(false);
+  };
+  // ----------------------------------------------------------------
 
   const openModal = (type: 'all' | 'groom' | 'bride') => {
     setFilterType(type);
@@ -135,24 +173,15 @@ export default function RsvpMobilePage() {
         <div className="w-full max-w-xs">
           <div className="flex justify-center mb-8">
             <div className="relative p-3 bg-neutral-900 rounded-full mb-4 overflow-hidden">
-              {/* 아이콘 (빛 위에 표시되도록 z-index 설정) */}
               <Lock className="relative z-10 w-5 h-5 text-white" />
-
-              {/* 쉬머 효과 레이어 */}
-              {/* via-white/30: 빛의 밝기 조절 */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-
               <style jsx>{`
                   @keyframes shimmer {
-                      0% {
-                          transform: translateX(-100%) skewX(-20deg);
-                      }
-                      100% {
-                          transform: translateX(200%) skewX(-20deg);
-                      }
+                      0% { transform: translateX(-100%) skewX(-20deg); }
+                      100% { transform: translateX(200%) skewX(-20deg); }
                   }
                   .animate-shimmer {
-                      animation: shimmer 2.0s infinite; /* 0.8초로 빠르게 설정 */
+                      animation: shimmer 2.0s infinite;
                   }
               `}</style>
             </div>
@@ -189,10 +218,9 @@ export default function RsvpMobilePage() {
       <nav className="bg-white/80 backdrop-blur-md border-b border-neutral-200 px-4 py-3 sticky top-0 z-40 flex justify-between items-center h-14">
         <h1 className="text-lg font-bold tracking-tight text-neutral-900">웨딩 대시보드</h1>
         <div className="flex gap-2">
-          {/* [수정] text-neutral-400 -> text-red-500 으로 변경하여 상시 붉은색 표시 */}
           <button
             onClick={handleResetData}
-            className="p-2 text-red-500 ransition-colors"
+            className="p-2 text-red-500 transition-colors"
           >
             <Trash2 size={20} />
           </button>
@@ -207,7 +235,6 @@ export default function RsvpMobilePage() {
       </nav>
 
       <main className="p-4 space-y-4 pb-24">
-
         {/* 요약 통계 */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between h-28">
@@ -296,7 +323,6 @@ export default function RsvpMobilePage() {
             <List size={18} /> 전체 명단 보기 ({rsvpList.length})
           </button>
         </div>
-
       </main>
 
       {/* 모달 */}
@@ -339,7 +365,7 @@ export default function RsvpMobilePage() {
                 }
 
                 return (
-                  <div key={item.id} className="bg-white p-4 rounded-xl border border-neutral-200 shadow-sm">
+                  <div key={item.id} className="bg-white p-4 rounded-xl border border-neutral-200 shadow-sm relative">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-base font-bold text-neutral-900">{item.name}</span>
@@ -347,8 +373,20 @@ export default function RsvpMobilePage() {
                           {sideText}
                         </span>
                       </div>
-                      <div className={`text-xs px-2 py-1 rounded font-bold ${mealStyle}`}>
-                        {mealText}
+                      
+                      {/* [수정됨] 식사 뱃지와 삭제 버튼을 감싸는 div */}
+                      <div className="flex items-center gap-2">
+                        <div className={`text-xs px-2 py-1 rounded font-bold ${mealStyle}`}>
+                          {mealText}
+                        </div>
+                        
+                        {/* [추가됨] 개별 삭제 버튼 */}
+                        <button 
+                            onClick={() => handleDeleteItem(item)}
+                            className="p-1.5 -mr-1.5 text-neutral-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                        >
+                            <Trash2 size={16} />
+                        </button>
                       </div>
                     </div>
 
