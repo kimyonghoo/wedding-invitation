@@ -86,7 +86,8 @@ const Section_RSVP = () => {
           </p>
           <h2 className="text-xl font-bold text-stone-800 tracking-wide">참석 의사 전달</h2>
           <p className="text-stone-500 text-[11px] mt-2 tracking-tight opacity-80 leading-relaxed">
-            원활한 예식 진행을 위해<br />
+            예식과 식사가 동시에 진행되어<br />
+            귀한 걸음 부족함 없이 모실 수 있도록<br />
             참석 정보를 알려주시면 감사하겠습니다.
           </p>
         </div>
