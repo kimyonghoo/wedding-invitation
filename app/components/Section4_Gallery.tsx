@@ -42,7 +42,6 @@ const Section4_Gallery = () => {
     }
   };
 
-  // [수정 핵심] 애니메이션 설정 변경 (빠르고 끊어지는 느낌)
   const slideVariants: Variants = {
     enter: (dir: number) => ({
       x: dir > 0 ? '100%' : '-100%',
@@ -55,8 +54,8 @@ const Section4_Gallery = () => {
       transition: {
         x: { 
           type: "tween", 
-          ease: "linear", // 가속도 없이 일정하게
-          duration: 0.3   // 0.3초 동안 빠르게 이동
+          ease: "linear", 
+          duration: 0.3  
         },
         opacity: { duration: 0.2 }
       }
@@ -96,7 +95,8 @@ const Section4_Gallery = () => {
           </h2>
         </div>
 
-        <div className="overflow-x-auto pb-4 -mx-6 px-6 md:-mx-8 md:px-8 snap-x touch-pan-x scrollbar-hide">
+        {/* [수정됨] touch-pan-x를 touch-auto로 변경하여 상하 스크롤을 허용합니다. */}
+        <div className="overflow-x-auto pb-4 -mx-6 px-6 md:-mx-8 md:px-8 snap-x touch-auto scrollbar-hide">
           <div className="grid grid-rows-3 grid-flow-col gap-1 w-max">
             {images.map((src, i) => (
               <motion.div
@@ -104,7 +104,8 @@ const Section4_Gallery = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => { setDirection(0); setSelectedIndex(i); }}
-                className="relative aspect-square h-24 md:h-32 cursor-pointer rounded-sm overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all group border border-white/50 snap-start"
+                // [수정됨] touch-auto 추가: 개별 터치 시에도 상하 스크롤 이벤트가 방해받지 않도록 보장
+                className="relative aspect-square h-24 md:h-32 cursor-pointer rounded-sm overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all group border border-white/50 snap-start touch-auto"
               >
                 <Image 
                   src={src} 
@@ -134,7 +135,7 @@ const Section4_Gallery = () => {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }} // 켜질 때도 빠르게 (0.5 -> 0.2)
+            transition={{ duration: 0.2 }}
             onClick={() => setSelectedIndex(null)}
             className="fixed inset-0 z-[99999] flex items-center justify-center bg-white/95 backdrop-blur-xl px-4"
           >
