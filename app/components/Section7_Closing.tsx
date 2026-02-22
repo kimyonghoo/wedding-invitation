@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Gowun_Batang, Playfair_Display } from 'next/font/google';
+// Montserrat 폰트 추가
+import { Gowun_Batang, Playfair_Display, Montserrat } from 'next/font/google'; 
 import { useEffect, useState } from 'react';
 
 const koreanFont = Gowun_Batang({
@@ -15,6 +16,13 @@ const englishFont = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '600'],
   style: ['normal', 'italic'],
+  display: 'swap',
+});
+
+// Copyright용 깔끔한 산세리프 폰트 설정
+const copyrightFont = Montserrat({
+  subsets: ['latin'],
+  weight: ['300', '400'],
   display: 'swap',
 });
 
@@ -31,7 +39,7 @@ const Section7_Closing = () => {
     // 1. 처음 마운트 될 때 확인
     updateName();
 
-    // 2. [수정 핵심] 'rsvp-updated' 이벤트가 발생하면 다시 확인 (이벤트 리스너 등록)
+    // 2. 'rsvp-updated' 이벤트가 발생하면 다시 확인 (이벤트 리스너 등록)
     window.addEventListener('rsvp-updated', updateName);
 
     // 3. 컴포넌트 언마운트 시 리스너 제거
@@ -43,7 +51,7 @@ const Section7_Closing = () => {
   return (
     <section className="snap-section relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-stone-50">
       
-      {/* 2. 액자 + 와이어 (기존 코드 동일) */}
+      {/* 2. 액자 + 와이어 */}
       <motion.div 
         className="absolute top-0 w-full h-full flex flex-col items-center pointer-events-none z-10"
         style={{ transformOrigin: 'top center' }} 
@@ -92,7 +100,6 @@ const Section7_Closing = () => {
             </div>
         </motion.div>
       </motion.div>
-
 
       {/* 3. 하단 마무리 텍스트 */}
       <div className="absolute bottom-[12vh] w-full z-20 flex flex-col items-center text-center px-4">
@@ -146,8 +153,20 @@ const Section7_Closing = () => {
         >
           Thank You
         </motion.p>
-
       </div>
+
+      {/* 4. Copyright 추가 영역 (폰트 교체 완료) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 2.0 }}
+        className="absolute bottom-6 w-full z-20 flex justify-center"
+      >
+        <p className={`${copyrightFont.className} text-[8px] text-stone-400 tracking-widest font-light opacity-80`}>
+          &copy; 2026. O&apos;hoo All rights reserved.
+        </p>
+      </motion.div>
 
     </section>
   );
