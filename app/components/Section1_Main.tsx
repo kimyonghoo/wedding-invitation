@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
 
 // 1. 폰트 설정
 const koreanFont = Gowun_Batang({
@@ -45,7 +46,7 @@ const Section1_Main = () => {
         >
           {/* 신랑 이름 (text-xl로 축소, 자간 0.2em) */}
           <span className={`${koreanFont.className} text-xl md:text-3xl font-bold text-stone-900 tracking-[0.2em] drop-shadow-sm`}>
-            박형묵
+            {WEDDING_INFO.groom.lastname}{WEDDING_INFO.groom.firstname}
           </span>
           
           {/* & 기호 */}
@@ -55,7 +56,7 @@ const Section1_Main = () => {
           
           {/* 신부 이름 */}
           <span className={`${koreanFont.className} text-xl md:text-3xl font-bold text-stone-900 tracking-[0.2em] drop-shadow-sm`}>
-            문원영
+            {WEDDING_INFO.bride.lastname}{WEDDING_INFO.bride.firstname}
           </span>
         </motion.h1>
 
@@ -126,7 +127,7 @@ const Section1_Main = () => {
             <div className="relative z-10 p-3 bg-white shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-[75vw] max-w-[380px] aspect-[3/4]">
                 <div className="relative w-full h-full bg-stone-50 overflow-hidden border border-stone-100">
                     <Image 
-                        src="/images/wedding/section1.jpg" // 메인 사진
+                        src={`/images/wedding/${process.env.NEXT_PUBLIC_MAIN_IMAGE || 'section1.jpg'}`} // 메인 사진
                         alt="Wedding Couple"
                         fill
                         className="object-cover"

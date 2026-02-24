@@ -67,18 +67,6 @@ html, body {
   position: relative;
 }
 
-
-/* [공통 배경 스타일] (이전에 설정한 것 유지) */
-.wedding-bg {
-  position: relative;
-  background-image: url('/images/modern-bg.png'); 
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* 배경 고정 */
-  isolation: isolate; 
-}
-
 /* [공통 오버레이 스타일] */
 .wedding-bg::before {
   content: "";

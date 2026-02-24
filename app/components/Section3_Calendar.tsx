@@ -1,43 +1,30 @@
+// app/components/Section3_Calendar.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import Countdown from 'react-countdown';
 import { useEffect, useState } from 'react';
-import { Gowun_Batang, Playfair_Display } from 'next/font/google';
+import { Gowun_Batang } from 'next/font/google';
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
+import CalendarWidget from '@/app/components/CalendarWidget'; // [추가] 달력 컴포넌트 임포트
 
-// 1. 감성적인 한글 폰트
 const koreanFont = Gowun_Batang({
   subsets: ['latin'],
   weight: ['400', '700'],
   display: 'swap',
 });
 
-// 2. 럭셔리한 영문/숫자 폰트
-const englishFont = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  display: 'swap',
-});
-
 const Section3_Calendar = () => {
-  const targetDate = new Date('2026-04-18T12:00:00+09:00');
   const [isMounted, setIsMounted] = useState(false);
+  const { year, month, day, hour, minute } = WEDDING_INFO.date;
+
+  // 카운트다운 타겟 설정
+  const targetDateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
+  const targetDate = new Date(targetDateStr);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // 달력 데이터 생성 (null은 빈 칸)
-  const calendarDays = [
-    null, null, null, // 앞쪽 빈칸 3개
-    1, 2, 3, 4,
-    5, 6, 7, 8, 9, 10, 11,
-    12, 13, 14, 15, 16, 17,
-    18, // D-Day
-    19, 20, 21, 22, 23, 24, 25,
-    26, 27, 28, 29, 30,
-    null, null // 뒤쪽 빈칸 2개
-  ];
 
   const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
     if (completed) return <span className={`${koreanFont.className} text-sm text-stone-800 font-bold`}>결혼식을 축하합니다!</span>;
@@ -79,56 +66,14 @@ const Section3_Calendar = () => {
          className="relative z-10 w-full max-w-sm bg-white/70 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 rounded-sm p-8 flex flex-col items-center"
       >
         <h2 className={`${koreanFont.className} text-xl font-bold mb-3 text-stone-800 text-center tracking-wide`}>
-            4월의 어느 멋진 날
+            {month}월의 어느 멋진 날
         </h2>
-        <p className={`${koreanFont.className} mb-8 text-center text-stone-600 text-xs font-medium tracking-[0.1em] uppercase`}>
-            2026. 04. 18. Sat 12:00 PM
+        <p className={`${koreanFont.className} mb-8 text-center text-stone-600 text-xs font-medium tracking-[0.1em]`}>
+            {year}. {month}. {day}. {WEDDING_INFO.date.dayOfWeekEn} {WEDDING_INFO.date.hour}:{WEDDING_INFO.date.minute} {WEDDING_INFO.date.ampm}
         </p>
 
-        {/* 달력 본체 */}
-        <div className="w-full mb-8 px-2">
-          {/* 요일 헤더 */}
-          <div className={`${koreanFont.className} grid grid-cols-7 gap-1 text-center text-[10px] text-stone-500 mb-4 font-semibold tracking-widest border-b border-stone-300/50 pb-2`}>
-            <div className="text-red-400">SUN</div>
-            <div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div>
-            <div className="text-stone-400">SAT</div>
-          </div>
-          
-          {/* [수정] 날짜 그리드: map을 사용하여 모든 셀의 높이를 h-9로 고정 */}
-          <div className={`${koreanFont.className} grid grid-cols-7 gap-y-1 gap-x-1 text-center text-xs text-stone-700 font-medium`}>
-             {calendarDays.map((day, index) => {
-                // 일요일(index % 7 === 0)은 빨간색, 토요일(index % 7 === 6)은 회색, 4일/11일/25일은 기존 코드대로 회색 처리
-                const isSunday = index % 7 === 0;
-                const isSaturday = index % 7 === 6;
-                // 기존 코드의 특이사항(4,11,25일 회색) 유지
-                const isSpecialGray = day === 4 || day === 11 || day === 25; 
-
-                return (
-                    <div 
-                        key={index} 
-                        // [핵심] 모든 셀에 h-9(36px) 높이를 강제하여 18일 하이라이트가 있어도 줄이 밀리지 않게 함
-                        className={`flex items-center justify-center h-9 w-full ${
-                            isSunday || day === 5 || day === 12 || day === 19 || day === 26 ? 'text-red-400' : 
-                            isSaturday || isSpecialGray ? 'text-stone-400' : ''
-                        }`}
-                    >
-                        {day === 18 ? (
-                             // 18일 하이라이트 디자인
-                             <div className="relative flex items-center justify-center w-full h-full">
-                                <div className="absolute w-7 h-7 bg-amber-200/50 rounded-full animate-ping"></div>
-                                <span className="relative z-10 text-white font-bold bg-amber-700 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow-md pt-[1px]">
-                                    18
-                                </span>
-                             </div>
-                        ) : (
-                            // 일반 날짜
-                            day
-                        )}
-                    </div>
-                );
-             })}
-          </div>
-        </div>
+        {/* [변경] 분리한 달력 컴포넌트 렌더링 */}
+        <CalendarWidget />
 
         {/* 카운트다운 박스 */}
         <div className="w-full py-6 px-4 rounded-lg border border-stone-300/50 flex justify-center min-h-[110px] bg-white/40 shadow-inner">

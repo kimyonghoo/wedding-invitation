@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
 
 const koreanFont = Gowun_Batang({
   subsets: ['latin'],
@@ -60,7 +61,7 @@ const Section2_Quote = () => {
             
             {/* 혼주 (오른쪽 정렬) */}
             <div className="text-right text-stone-700 text-[15px] tracking-tight whitespace-nowrap">
-                박남용 · 곽영희
+                {WEDDING_INFO.groom.parents.father} · {WEDDING_INFO.groom.parents.mother}
             </div>
             {/* 관계 (가운데 정렬) */}
             <div className="text-center text-stone-400 text-[11px] whitespace-nowrap pt-[2px]">
@@ -68,7 +69,7 @@ const Section2_Quote = () => {
             </div>
             {/* 이름 (왼쪽 정렬) */}
             <div className="text-left text-xl font-bold text-stone-900 whitespace-nowrap">
-                형묵
+                {WEDDING_INFO.groom.firstname}
             </div>
 
 
@@ -76,7 +77,7 @@ const Section2_Quote = () => {
 
             {/* 혼주 (오른쪽 정렬) */}
             <div className="text-right text-stone-700 text-[15px] tracking-tight whitespace-nowrap">
-                문장혁 · 김계숙
+                {WEDDING_INFO.bride.parents.father} · {WEDDING_INFO.bride.parents.mother}
             </div>
             {/* 관계 (가운데 정렬) */}
             <div className="text-center text-stone-400 text-[11px] whitespace-nowrap pt-[2px]">
@@ -84,7 +85,7 @@ const Section2_Quote = () => {
             </div>
             {/* 이름 (왼쪽 정렬) */}
             <div className="text-left text-xl font-bold text-stone-900 whitespace-nowrap">
-                원영
+                {WEDDING_INFO.bride.firstname}
             </div>
 
         </div>

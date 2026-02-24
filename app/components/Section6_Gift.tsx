@@ -5,6 +5,7 @@ import { supabase } from '@/app/lib/supabaseClient';
 import { Copy, MessageCircle, Loader2, Send, X, ChevronRight, ChevronDown } from 'lucide-react';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
 
 const koreanFont = Gowun_Batang({
   subsets: ['latin'],
@@ -25,18 +26,34 @@ type GuestMessage = {
   created_at: string;
 };
 
-// 계좌 정보 데이터
-const groomAccounts = [
-    { bank: '우리은행', name: '박형묵', account: '1002-441-560976', copyText: '1002441560976' },
-    { bank: '경남은행', name: '박남용', account: '503-22-0173504', copyText: '503220173504' },
-    { bank: '경남은행', name: '곽영희', account: '513-22-0500311', copyText: '513220500311' },
+// [수정] 구조 분해 할당으로 groom, bride 정보만 깔끔하게 빼옵니다.
+const { groom, bride } = WEDDING_INFO;
+
+// [수정] 신랑/신부 계좌 객체를 만드는 공통 함수 (반복되는 코드를 확 줄여줍니다!)
+const createAccountList = (side: typeof groom) => [
+  { 
+    bank: side.accounts[0].bank, 
+    name: side.lastname + side.firstname, 
+    account: side.accounts[0].number, 
+    copyText: side.accounts[0].number?.replace(/-/g, '') 
+  },
+  { 
+    bank: side.accounts[1].bank, 
+    name: side.parents.father, 
+    account: side.accounts[1].number, 
+    copyText: side.accounts[1].number?.replace(/-/g, '') 
+  },
+  { 
+    bank: side.accounts[2].bank, 
+    name: side.parents.mother, 
+    account: side.accounts[2].number, 
+    copyText: side.accounts[2].number?.replace(/-/g, '') 
+  },
 ];
 
-const brideAccounts = [
-    { bank: '하나은행', name: '문원영', account: '231-910586-17507', copyText: '23191058617507' },
-    { bank: '토스뱅크', name: '문장혁', account: '1000-1700-7320', copyText: '100017007320' },
-    { bank: 'NH농협', name: '김계숙', account: '301-0261-1959-01', copyText: '3010261195901' },
-];
+// 위 함수를 이용해 각각의 배열을 생성
+const groomAccounts = createAccountList(groom);
+const brideAccounts = createAccountList(bride);
 
 const Section6_Gift = () => {
   const [activeModal, setActiveModal] = useState<'groom' | 'bride' | null>(null);
@@ -88,7 +105,6 @@ const Section6_Gift = () => {
     alert('계좌번호가 복사되었습니다.');
   };
 
-  // [기능 추가] 다음 섹션으로 스크롤 이동
   const scrollToNext = () => {
     const currentSection = document.querySelector('.gift-section');
     if (currentSection?.nextElementSibling) {
@@ -97,10 +113,9 @@ const Section6_Gift = () => {
   };
 
   return (
-    // [식별자 추가] .gift-section 클래스 추가
     <section className={`gift-section snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-4 overflow-hidden ${koreanFont.className}`}>
 
-      {/* 2. 메인 콘텐츠 카드 */}
+      {/* 메인 콘텐츠 카드 */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }} 
         whileInView={{ opacity: 1, y: 0 }} 
@@ -195,7 +210,6 @@ const Section6_Gift = () => {
         </div>
       </motion.div>
 
-
       {/* 계좌번호 모달 팝업 */}
       <AnimatePresence>
         {activeModal && (
@@ -257,7 +271,7 @@ const Section6_Gift = () => {
         )}
       </AnimatePresence>
       
-      {/* [수정] 스크롤 유도 버튼 (텍스트 + 아이콘) */}
+      {/* 스크롤 유도 버튼 */}
       <motion.button 
           onClick={scrollToNext}
           initial={{ opacity: 0 }}

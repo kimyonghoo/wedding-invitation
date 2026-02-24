@@ -1,12 +1,16 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
+import { VolumeX, Music } from 'lucide-react'; // Volume2는 미사용이므로 제거했습니다.
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BackgroundMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // 환경변수에서 파일명을 가져오고, 값이 없으면 기본값('bg.mp3')을 사용합니다.
+  const bgmFileName = process.env.NEXT_PUBLIC_BGM_FILENAME || 'bg.mp3';
+  const audioSrc = `/music/${bgmFileName}`;
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
@@ -23,8 +27,8 @@ const BackgroundMusic = () => {
 
   return (
     <>
-      {/* 실제 오디오 태그 (화면에는 안 보임) */}
-      <audio ref={audioRef} src="/music/bg.mp3" loop />
+      {/* 환경변수로 동적 할당된 audioSrc 적용 */}
+      <audio ref={audioRef} src={audioSrc} loop />
 
       {/* 우측 상단 고정 버튼 */}
       <motion.button

@@ -3,15 +3,23 @@
 import Image from 'next/image';
 
 const FixedBackground = () => {
+  // 1. 환경 변수에서 SEASON 값 가져오기
+  // process.env.NEXT_PUBLIC_SEASON 값이 없으면 기본값으로 'spring'을 사용합니다.
+  const season = process.env.NEXT_PUBLIC_SEASON || 'spring';
+  // 2. 동적 이미지 경로 생성
+  // 예: season이 'summer'라면 -> '/images/bg/summer.png' 가 됩니다.
+  // 대소문자 실수를 방지하기 위해 toLowerCase()를 사용합니다.
+  const imagePath = `/images/bg/${season.toLowerCase()}.png`;
+
   return (
     <div className="fixed inset-0 z-[-1] w-full h-full overflow-hidden bg-stone-50">
       {/* 배경 이미지 */}
       <Image
-        src="/images/modern-bg.png" // 사용하시려는 배경 이미지 경로
-        alt="Background"
+        src={imagePath} // 3. 동적으로 생성된 경로 적용
+        alt={`${season} background`} // alt 속성도 동적으로 변경
         fill
         priority
-        className="object-cover opacity-60" // 투명도 조절 (너무 진하면 글씨 안 보임)
+        className="object-cover opacity-60 transition-opacity duration-500" // 투명도 조절 및 부드러운 전환을 위한 transition 추가
         style={{ objectPosition: 'center' }}
       />
       

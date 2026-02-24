@@ -5,6 +5,7 @@ import Image from 'next/image';
 // Montserrat 폰트 추가
 import { Gowun_Batang, Playfair_Display, Montserrat } from 'next/font/google'; 
 import { useEffect, useState } from 'react';
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
 
 const koreanFont = Gowun_Batang({
   subsets: ['latin'],
@@ -90,7 +91,7 @@ const Section7_Closing = () => {
             <div className="relative z-10 p-3 bg-white shadow-[0_15px_35px_rgba(0,0,0,0.15)] w-[65vw] max-w-[280px] aspect-[3/4]">
                 <div className="relative w-full h-full bg-stone-50 overflow-hidden border border-stone-100">
                     <Image 
-                        src="/images/wedding/gallery-10.jpg" 
+                        src={`/images/wedding/${process.env.NEXT_PUBLIC_CLOSING_IMAGE || 'closing_couple.jpg'}`} 
                         alt="Closing Couple"
                         fill
                         className="object-cover"
@@ -141,7 +142,7 @@ const Section7_Closing = () => {
           transition={{ duration: 1.2, delay: 1.5, ease: "easeOut" }}
           className={`${koreanFont.className} text-2xl md:text-3xl font-bold text-stone-800 tracking-wide mb-4 drop-shadow-sm`}
         >
-          4월 18일에 만나요
+          {WEDDING_INFO.date.month}월 {WEDDING_INFO.date.day}일에 만나요
         </motion.h2>
 
         <motion.p

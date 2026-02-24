@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Train, Bus, Megaphone } from 'lucide-react';
 import { Gowun_Batang, Playfair_Display } from 'next/font/google';
 import { Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
+import { WEDDING_INFO } from '@/app/config/weddingInfo';
 
 const koreanFont = Gowun_Batang({
     subsets: ['latin'],
@@ -22,8 +23,8 @@ const Section5_Map = () => {
         appkey: "a604d8920a0dd167831ffad84b10b2d3", // 본인의 API KEY 확인
     });
 
-    const HOTEL_LAT = 37.5371879;
-    const HOTEL_LNG = 126.9442721;
+    const LOCATION_LAT = WEDDING_INFO.place.lat;
+    const LOCATION_LNG = WEDDING_INFO.place.lng;
 
     return (
         <section className={`snap-section relative w-full min-h-[100dvh] flex items-center justify-center p-6 overflow-hidden ${koreanFont.className}`}>
@@ -46,10 +47,10 @@ const Section5_Map = () => {
                 {/* 지도 섹션 간격 축소 mb-6 -> mb-5 */}
                 <div className="w-full mb-5">
                     <div className="text-center mb-3">
-                        <h3 className="text-base font-bold text-[13px] text-stone-900 mb-1">호텔나루서울 엠갤러리</h3>
+                        <h3 className="text-base font-bold text-[13px] text-stone-900 mb-1">{WEDDING_INFO.place.location}</h3>
                         <div className="flex items-center justify-center gap-1 text-stone-500 text-[11px] font-medium">
                             <MapPin size={12} className="text-stone-400" />
-                            <span>서울 마포구 마포대로 8</span>
+                            <span>{WEDDING_INFO.place.address}</span>
                         </div>
                     </div>
 
@@ -61,13 +62,13 @@ const Section5_Map = () => {
                             </div>
                         ) : (
                             <Map
-                                center={{ lat: HOTEL_LAT, lng: HOTEL_LNG }}
+                                center={{ lat: LOCATION_LAT, lng: LOCATION_LNG }}
                                 style={{ width: "100%", height: "100%" }}
                                 level={5}
                                 draggable={true}
                                 zoomable={true}
                             >
-                                <MapMarker position={{ lat: HOTEL_LAT, lng: HOTEL_LNG }} />
+                                <MapMarker position={{ lat: LOCATION_LAT, lng: LOCATION_LNG }} />
                             </Map>
                         )}
                     </div>
@@ -77,10 +78,10 @@ const Section5_Map = () => {
                         <a href="https://map.kakao.com/link/search/호텔나루서울엠갤러리" target="_blank" className="py-2.5 bg-[#FEE500] hover:brightness-95 text-stone-900 rounded-[4px] font-bold text-[10px] flex items-center justify-center shadow-sm transition-all">카카오맵</a>
                         <a href="https://map.naver.com/v5/search/호텔나루서울엠갤러리" target="_blank" className="py-2.5 bg-[#03C75A] hover:brightness-95 text-white rounded-[4px] font-bold text-[10px] flex items-center justify-center shadow-sm transition-all">네이버지도</a>
                         <a
-                            href={`tmap://search?name=호텔나루서울엠갤러리&lon=${HOTEL_LNG}&lat=${HOTEL_LAT}`}
+                            href={`tmap://search?name=호텔나루서울엠갤러리&lon=${LOCATION_LNG}&lat=${LOCATION_LAT}`}
                             onClick={(e) => {
                                 e.preventDefault();
-                                window.location.href = `tmap://search?name=호텔나루서울엠갤러리&lon=${HOTEL_LNG}&lat=${HOTEL_LAT}`;
+                                window.location.href = `tmap://search?name=호텔나루서울엠갤러리&lon=${LOCATION_LNG}&lat=${LOCATION_LAT}`;
                                 setTimeout(() => {
                                     window.open('https://www.tmap.co.kr/tmap2/mobile/route.do', '_blank');
                                 }, 1500);
